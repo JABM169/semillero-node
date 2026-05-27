@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export const hashpassword = async(password : string) => {
 
@@ -11,3 +12,11 @@ export const checkPassword = async(enteredPassword : string, hashedPassword: str
     return result;
 
 }
+
+
+export const generateJWT = (payload: { id: any }) => {
+    // El token se firma con una palabra secreta (SECRET) y una duración
+    return jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: '180d' // El token durará 180 días
+    });
+};

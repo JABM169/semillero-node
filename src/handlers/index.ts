@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import slug from 'slug';
 import User from "../models/User";
 import { hashpassword, checkPassword } from '../utils/auth';
+import { generateJWT } from '../utils/auth';
 
 export const createAccount= async( req: Request, res : Response)=> {
 
@@ -51,5 +52,12 @@ export const login = async(req: Request, res: Response ) => {
             const error = new Error('el password es incorrecto!...')
             return res.status(401).json({error: error.message})
         }
-         res.json({"msg": "Usuario existente!..."});
+        const token = generateJWT({ id: user._id });
+
+
+         //res.json({"msg": "Usuario existente!..."});
+         res.status(200).send(token);
     }
+
+
+
