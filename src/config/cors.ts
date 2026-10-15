@@ -1,13 +1,20 @@
 import { CorsOptions } from 'cors';
-import { errors } from 'undici-types';
+
+console.log(process.argv)
 
 export const corsConfig: CorsOptions = {
     origin: function(origin, callback) {
-        if (origin === 'http://localhost:5173'){
-            callback(null , true)
+        const whiteList = [process.env.FRONTEND_URL]
+
+        if ( process.argv[2] === '--api' ) {
+            whiteList.push(undefined)
             
 
-        } else {
+        }
+        if ( whiteList.includes(origin) ) {
+            callback( null, true )
+        
+        }else {
                callback(new Error('errors de cors'))  
         }
       
